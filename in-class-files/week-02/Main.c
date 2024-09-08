@@ -131,14 +131,17 @@ int main() {
     1 move - a to c
 
     1 move
-    
+
     */
 
     return 0;
 }
 
 int move(int n, char a, char b, char c) {
-
+    if (n == 1) {
+        printf("Moved 1 Disk from A to C");
+        return;
+    }
 }
 
 // double halleys(double x, double epsillion) {
