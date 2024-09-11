@@ -39,8 +39,41 @@ int main() {
     // char s[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
     // char s[6] = "Hello"; // binary null is still present '\0'
 
-    char s[] = "Hello"; // binary null is still present '\0'
-    printf("Array is: %s\n", s); // passing entire array
+    // char s[] = "Hello"; // binary null is still present '\0'
+    //printf("Array is: %s\n", s); // passing entire array
+
+    /*
+    can be static
+    can be dynamic 
+    cannot be too large - stack has limited space
+    arrays are passed as pointer - reference to orignal array 
+    */
+
+   // structures - compound types
+   
+    // struct Person {
+    //     int age;
+    //     char gender;
+    // }
+
+    // struct Person p;
+    // p.age = 44;
+    // p.gender = 'M';
+
+        // struct Person {
+    //     int age;
+    //     char gender;
+    //     char name[32];
+    // }
+
+    // struct Person family[4] = {
+    //     {50, 'M', "Darth Vader"},
+    //     {49, 'F', 'Padme'},
+    //     {21, 'M', 'Luke'},
+    //     {19, 'F', 'Leia'}
+    // }
+
+    
 
     return 0;
 }
