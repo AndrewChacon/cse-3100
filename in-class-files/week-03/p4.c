@@ -5,7 +5,14 @@
 
 void printMat(int n, int** x) {
 	/*TODO: print the matrix stored in x */
-	return;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			printf("%i ", x[i][j]);
+		}
+		printf("\n");
+	}
+
+		return;
 }
 
 int main() {
@@ -14,6 +21,6 @@ int main() {
 	/*TODO: allocate memory and initialize a 2-D identity matrix of size n x n. Call the printMat function to print the matrix.
 	  		do not forget to free the memory that you've allocated. */
 	
-
+	
 	return 0;
 }
