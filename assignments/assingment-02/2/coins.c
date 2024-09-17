@@ -17,10 +17,13 @@ int value(int coin){
 }
 
 int count(int amount, int maxCoin){
-  /*
-    TODO: Fill this in to count the number of ways to make change for amount cents using coins with value <= the value of maxCoin
-   */
-  return 0;
+  if (amount == 0) return 1;
+  if (amount < 0 || maxCoin < METHANOL) return 0; 
+
+  int withMaxCoin = count(amount - value(maxCoin), maxCoin);
+  int withoutMaxCoin = count(amount, maxCoin - 1);
+
+  return withMaxCoin + withoutMaxCoin;
 }
 
 int main(int argc, char* argv[]){

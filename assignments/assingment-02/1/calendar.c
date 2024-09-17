@@ -32,8 +32,17 @@ int numDaysInMonth(int month, int year){
 
 int numFirstMondays(int startYear, int endYear, int janFirstWeekday)
 {
-  /*
-    TODO: Add a loop here to compute the number of mondays that fall on the first of the month between January 1st of startYear and dec 31st of endYear. Note that janFirstWeekday is the weekday of january 1st of startYear.
-   */
-  return 0;
+    int count = 0;
+    int weekDay = janFirstWeekday;
+
+    for (int year = startYear; year <= endYear; year++) {
+        for (int month = JAN; month <= DEC; month++) {
+            if (weekDay == 1) { 
+                count++;
+            }
+            weekDay = (weekDay + numDaysInMonth(month, year)) % 7;
+        }
+    }
+    
+    return count;
 }

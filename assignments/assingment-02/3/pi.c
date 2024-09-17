@@ -1,19 +1,20 @@
 #include <stdio.h>
 #include <assert.h>
 
-double leibnizRecurrent(int n)
-{
-  /* TODO: Fill in a recurrent version. That is, compute the term for n plus leibnizRecurrent(n - 1) 
-           Try to avoid the use of pow.
-  */
-
+double leibnizRecurrent(int n) {
+  if (n == 0) {
+    return 1.0;  // base case
+  } else {
+    return (n % 2 == 0 ? 1.0 : -1.0) / (2.0 * n + 1) + leibnizRecurrent(n - 1);
+  }
 }
 
-double leibnizIterative(int n)
-{
-  /* TODO: Fill in the iterative version. That is, use a loop to compute the summation. 
-           Try to avoid the use of pow.
-  */
+double leibnizIterative(int n) {
+  double sum = 0.0;
+  for (int i = 0; i <= n; i++) {
+    sum += (i % 2 == 0 ? 1.0 : -1.0) / (2.0 * i + 1);
+  }
+    return sum;
 }
 
 int main(int argc, char* argv[]){
