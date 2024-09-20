@@ -13,11 +13,12 @@ typedef struct TokenArray{
  * from s to the duplicate string, and return the duplicate string. 
  */
 char* dupString(char* s, size_t len){
-  char* duplicate = malloc(len*sizeof(char));
+  char* duplicate = malloc((len+1)*sizeof(char));
   duplicate[len] = 0;
   for(size_t i = 0; i < len; i++){
     duplicate[i] = s[i];
   }
+  duplicate[len] = '\0'; // null terminator
   return duplicate;
 }
 
@@ -33,14 +34,17 @@ Output: The function returns the number of non-empty tokens in the string.
  *the middle one being a string with a single blank
  * Do make sure you handle all corner cases
  */
-int countTokens(char* s,char delim)
-{
+
+int countTokens(char* s, char delim) {
    int cnt = 0;
-   int inToken = *s != delim;
+   int inToken = 0;
    while (*s) {
-      if (*s == delim)
-	cnt += inToken;
-      inToken = *s != delim;
+      if (*s != delim && !inToken) {
+         inToken = 1;
+         cnt++;
+      } else if (*s == delim) {
+         inToken = 0;
+      }
       s++;
    }
    return cnt;
@@ -49,7 +53,7 @@ int countTokens(char* s,char delim)
 char* tokenEnd(char* from,char delim)
 {
    while (*from && *from != delim) from++;
-   return from - 1;
+   return from;
 }
 
 char* skipDelim(char* from,char delim)
@@ -73,10 +77,10 @@ TokenArray tokenize(char* string, char delim)
   size_t numTok = countTokens(string,delim);
   char** tokens = malloc(sizeof(char*)*numTok);  
   size_t tokenIndex = 0;
-  char* ts = string;
+  char* ts = skipDelim(string, delim);
   while(tokenIndex < numTok) {
      char* te = tokenEnd(ts,delim);
-     tokens[tokenIndex] = dupString(ts,te-ts+1);
+     tokens[tokenIndex] = dupString(ts,te-ts);
      ts = skipDelim(te,delim);
      tokenIndex++;
   }
@@ -91,7 +95,7 @@ int main(int argc, char* argv[])
   printf("Enter string:\n");
   char* string = NULL;
   size_t n = 0;
-  ssize_t lineSize = getline(&string, &n, stdin);
+  size_t lineSize = getline(&string, &n, stdin);
   string[lineSize - 1] = '\0';
   printf("Enter delimiter: ");
   char delim;

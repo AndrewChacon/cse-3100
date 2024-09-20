@@ -1,0 +1,12 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     debug
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _dupString, symObjAddr: 0x0, symBinAddr: 0x100003A64, symSize: 0x98 }
+  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _dupString, symObjAddr: 0x0, symBinAddr: 0x100003A64, symSize: 0x98 }
+  - { offsetInCU: 0xA1, offset: 0xA1, size: 0x8, addend: 0x0, symName: _countTokens, symObjAddr: 0x98, symBinAddr: 0x100003AFC, symSize: 0xB0 }
+  - { offsetInCU: 0xF3, offset: 0xF3, size: 0x8, addend: 0x0, symName: _tokenEnd, symObjAddr: 0x148, symBinAddr: 0x100003BAC, symSize: 0x78 }
+  - { offsetInCU: 0x129, offset: 0x129, size: 0x8, addend: 0x0, symName: _skipDelim, symObjAddr: 0x1C0, symBinAddr: 0x100003C24, symSize: 0x74 }
+  - { offsetInCU: 0x15F, offset: 0x15F, size: 0x8, addend: 0x0, symName: _tokenize, symObjAddr: 0x234, symBinAddr: 0x100003C98, symSize: 0xE0 }
+  - { offsetInCU: 0x1F7, offset: 0x1F7, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x314, symBinAddr: 0x100003D78, symSize: 0x170 }
+...
