@@ -13,7 +13,7 @@ void insertHeap(Heap* h, int val);
 void printHeap(Heap* h); // void printHeapAux(Heap* h, int from)
 int emptyHeap(Heap* h);
 int extractMin(Heap* h);
-
+// heapify 
 #endif
 
 /* 
