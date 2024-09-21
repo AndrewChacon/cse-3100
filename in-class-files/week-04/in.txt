@@ -1,0 +1,4 @@
+this is some random content
+lets read it in using
+different functions called
+fgets

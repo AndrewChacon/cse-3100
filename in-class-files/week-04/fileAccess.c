@@ -37,11 +37,61 @@ int main() {
             fprintf(fh_output, "%d\n", input);
         }
     }
+    fclose(fh_output);
 
-        /*
-        mode: a (append)
-        opens up file - doesnt overwrite, adds to existing content
-        */
 
-        return 0;
+    /*
+    mode: a (append)
+    opens up file - doesnt overwrite, adds to existing content
+    */
+
+   // reading contents of a file
+
+    FILE *fh_input;
+    fh_input = fopen("io.txt", "r");
+    // open file and set mode to r for read  
+
+    int fIn = 0;
+    int nums[100];
+    int lines = 0;
+
+    // fscanf(fh_input, "%d", &fIn); // scan data from
+    // reading first int from file
+    // printf("Number: %d\n", fIn);
+    // fclose(fh_input);
+
+    // keep calling fscanf until it reaches end of file 
+    // store value of each line into array
+    while(fscanf(fh_input, "%d", &fIn) != EOF) {
+        printf("File Line %d: %d\n", lines + 1, fIn);
+        nums[lines] = fIn;
+        lines++; // next line
+    }
+ 
+
+    int total = 0;
+    for (int i = 0; i < lines; i++) {
+        total += nums[i];
+    }
+
+    double avg = (float)total / (float)lines;
+
+    printf("total: %d\n", total);
+    printf("average: %.2lf\n", avg);
+
+    fclose(fh_input);
+
+    fh_input = fopen("in.txt", "r");
+
+    char buffer[256];
+    fgets(buffer, 256, fh_input);
+    // array for input, size of buffer, file read from
+
+    printf("Buffer: %s\n", buffer);
+    // reads in content of file as a string
+    // store it into buffer as string until reached size
+
+    fclose(fh_input);
+
+    return 0;
 }
