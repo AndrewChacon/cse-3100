@@ -6,54 +6,59 @@
 
 void initVector(IntVector* vec, int cap)
 {
-  /*
-    TODO: The IntVector structure is already allocated in memory. You need to fill in the fields of it. For this, you'll need to allocate an array for cap integers.
-   */
+  vec->numbers = (int*) malloc(cap * sizeof(int));  // allocate memory for cap 
+  vec->size = 0;  // size pointer
+  vec->capacity = cap;  // set cap
 }
 
 void freeVector(IntVector* vec)
 {
-  /*
-    TODO: Free the integer array that the IntVector contains. 
-  */
+  free(vec->numbers);  // Free array memory
+  vec->numbers = NULL;  // reset
+  vec->size = 0;  // size to 0
+  vec->capacity = 0;
 }
 
 void expandVector(IntVector* vec)
 {
   vec->capacity *= 2;
-  /*
-    TODO: Use the realloc function to double the capacity of the vector. This is only one line. 
-  */
+  vec->numbers = (int*) realloc(vec->numbers, vec->capacity * sizeof(int));
 }
 
 void pushBackVector(IntVector* vec, int number)
 {
-  /*
-    TODO: First, check if the vector size is equal to capacity. If it is, then expand it. Then, make the last element of the vector be number; don't forget to increase the size field.
-   */
+  if (vec->size == vec->capacity) {
+    expandVector(vec);  // if vectori s full 
+  }
+  vec->numbers[vec->size] = number; 
+  vec->size++;
 }
 
 int popBackVector(IntVector* vec)
 {
-  assert(vec->size > 0); /* asserts that the vector contains at least 1 element */
-  /* 
-    TODO: Remove and return the last element. Decrease the vector size by 1. 
-   */
+  assert(vec->size > 0); 
+  int number = vec->numbers[vec->size - 1]; 
+  vec->size--; 
+  return number;  // Return element
 }
 
 void pushFrontVector(IntVector* vec, int number)
 {
-  /*
-    TODO: First, check if the vector size is equal to the capacity. If it is, then expand it. Then, insert an element into the front of the vector. Don't forget to increment the size. 
-   */
+  if (vec->size == vec->capacity) {
+    expandVector(vec); 
+  }
+  memmove(&vec->numbers[1], &vec->numbers[0], vec->size * sizeof(int));
+  vec->numbers[0] = number;
+  vec->size++; 
 }
 
 int popFrontVector(IntVector* vec)
 {
   assert(vec->size > 0);
-  /*
-    TODO: Remove and return the number at the head of the vector. Be sure to shift remaining elements over to the left (toward the start of the vector) by one place. 
-   */
+  int number = vec->numbers[0];  // first element
+  memmove(&vec->numbers[0], &vec->numbers[1], (vec->size - 1) * sizeof(int));
+  vec->size--; 
+  return number;  // return first element
 }
 
 void swap(IntVector* vec, size_t indexOne, size_t indexTwo)
@@ -67,9 +72,13 @@ void swap(IntVector* vec, size_t indexOne, size_t indexTwo)
 
 void sortVector(IntVector* vec)
 {
-  /*
-    TODO: Implement Insertion Sort to sort the vector. The swap function will be useful here. 
-   */
+  for (size_t i = 1; i < vec->size; i++) {
+    size_t j = i;
+    while (j > 0 && vec->numbers[j - 1] > vec->numbers[j]) {
+      swap(vec, j, j - 1); 
+      j--;
+    }
+  }
 }
 
 void printVector(IntVector* vec)

@@ -4,30 +4,30 @@
 
 void initStack(Stack * s)
 {
-  /* TODO: Fill this in. One line of code. */
+  initList(&s->list); 
 }
 
 void pushStack(Stack* stack, int number)
 {
-  /* TODO: Fill this in. One line of code. */
+    pushFrontList(&stack->list, number); 
 }
 
 int popStack(Stack* stack)
 {
-  /* TODO: Fill this in. One line of code. */
+    return popFrontList(&stack->list);
 }
 
 void freeStack(Stack* stack)
 {
-  /* TODO: Fill this in. One line of code. */
+  freeList(&stack->list); 
 }  
 
 void printStack(Stack* stack)
 {
-  /* TODO: Fill this in. One line of code. */
+    printList(&stack->list);  
 }
 
 int isEmpty(Stack* stack)
 {
-  /* TODO: Fill this in. One line of code. */
+  return stack->list.len == 0;  
 }

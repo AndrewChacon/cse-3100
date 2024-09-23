@@ -1,24 +1,37 @@
-#include <stdio.h>
 #include "queue.h"
+#include <stdio.h>  
 
 void initQueue(Queue* q)
 {
-  /* TODO: Allocate memory and initialize the stacks of the queue. */
+    initStack(&q->stack1); 
+    initStack(&q->stack2); 
 }
 
 void enQueue(Queue* q, int number)
 {
-  /* TODO: Fill this in, one line of code */
+    pushStack(&q->stack1, number); 
 }
 
 int deQueue(Queue* q)
 {
-  /*
-    TODO: Check if stack 2 is empty. If it is, flip all of the elements from stack 1 to stack 2. Then, pop and return the element from stack 2.
-   */
+    if (isEmpty(&q->stack2)) {
+
+        while (!isEmpty(&q->stack1)) {
+            int val = popStack(&q->stack1);
+            pushStack(&q->stack2, val);
+        }
+    }
+    
+    if (isEmpty(&q->stack2)) {
+        fprintf(stderr, "Queue is empty\n");
+        exit(1);  
+    }
+
+    return popStack(&q->stack2); 
 }
 
 void freeQueue(Queue* q)
 {
-  /* TODO: Free up all the allocated memory. */
+    freeStack(&q->stack1); 
+    freeStack(&q->stack2); 
 }
