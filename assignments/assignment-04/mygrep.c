@@ -8,10 +8,20 @@
 /* This function prints lines (in a file) that contain string s.Assume all lines have at most (LINE_SIZE - 2) ASCII characters. */
 int print_matched_lines(const char *s, const char *filename)
 {
-    /* TODO: Open the file given in the argument and read every line till EOF. 
-	     If a line contains the string s, print it on the stdout. 
-             You may use strstr to determine if a string appears in another string. Check man page for strstr for details.
-	     Return 0 upon successful completion. Otherwise, return -1. */
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        // error opening file 
+        return -1;
+    }
+
+    char line[LINE_SIZE];
+    while (fgets(line, LINE_SIZE, file)) {
+        if (strstr(line, s)) {
+            printf("%s", line);
+        }
+    }
+
+    fclose(file);
     return 0;
 }
 
