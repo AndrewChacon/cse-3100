@@ -84,3 +84,22 @@ size of message - must be manually set
 // can you explain when we would need to use dup vs dup2?
 
 // also do u have example problems for pipes we can work on? 
+
+
+/*
+execlp is a family of functions that run command lines with files and arguments
+execlp("cat", "cat", NULL);
+the first arg is the name of the file/program "cat"
+the second arg is the first argument to the program
+
+execlp("cat", "cat", NULL);
+1 - searches directory for program 'Cat'
+1 - argument of cat program 'Cat'
+
+this is the equvilant of typing cat into the shell followed by its input
+cat "hello world" = execlp("cat", "cat", NULL);
+
+execl replaces what the child process is doing
+
+
+*/
