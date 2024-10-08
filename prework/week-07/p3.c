@@ -45,6 +45,8 @@ bind listen lets-talk accept listens send/recive close
 
 */
 
+// SERVER SIDE EXAMPLE
+
 #include <unistd.h> // unix apis
 #include <stdio.h>
 #include <stdlib.h> // malloc
@@ -95,3 +97,4 @@ int main(int argc, char* argv[]) {
     }
     return 0;
 }
+
