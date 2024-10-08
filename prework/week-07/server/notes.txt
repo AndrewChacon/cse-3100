@@ -1,0 +1,3 @@
+We will now test out a real example of client and server communication with our server.c and client.c files 
+
+use a command called tmux:
