@@ -38,7 +38,6 @@ int main(int argc, char* argv[]) {
     status = listen(sid, 10);
     checkError(status);
 
-
     while(1) { // always listening
         struct sockaddr_in client; // address of client 
         socklen_t clientSize;

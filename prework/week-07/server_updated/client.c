@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     char buf[] = "Hello server!"; // message we want to send
 
     int rem = strlen(buf) + 1, sent = 0;
-    while(rem) {
+    while(rem != 0) {
         status = send(sid, buf + sent, rem, 0);
         checkError(status, __LINE__);
         sent += status;
