@@ -36,5 +36,12 @@ int main(int argc, char* argv[]) {
 cc thread.c -lpthread -o thread
 ./thread 1000
 
+override
 
-*/
+./thread 100000000 
+used about 150% of the CPU
+required 2 cores to finish
+
+cc thread.c -lpthread -o thread -O3
+*/ 
+
