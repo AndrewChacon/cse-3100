@@ -14,3 +14,4 @@ Thread lifetime coordination - joining
 joinable when the thread dies, returns value of entry point
 another thread can join to pick up the value
 resource is reclaimed when join completes
+
