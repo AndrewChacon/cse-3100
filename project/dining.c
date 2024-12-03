@@ -46,7 +46,7 @@ void small_group_dining(group_t * grp)
 {
     restaurant_t * restt = grp->restaurant;
  
-    int table_size;     /* this variable keeps track of table size used by this group */
+    int table_size = 0;     /* this variable keeps track of table size used by this group */
 
     /* TODO:
         * A small group dines at a small table. A small group may dine at a big table if big tables are available and no big groups are waiting.
@@ -60,7 +60,21 @@ void small_group_dining(group_t * grp)
         * The sequence of steps to be taken for this implementation is given in the dining_process function above.
      */
 
-    return;
+    // lock the mutex
+    pthread_mutex_lock(&restt->mutex);
+
+    // check for table availability
+
+    // allocate table resource 
+
+    // unlock mutex
+
+    // simulate dinning
+
+    // once dinning is over we lock the mutex again 
+
+    // unlock mutex
+    pthread_mutex_unlock(&restt->mutex);
 }
 
 /* Handle the dining process for big groups. Read the dining_process() function above and the comments below for steps to take. */ 
@@ -80,7 +94,10 @@ void big_group_dining(group_t * grp)
         * The sequence of steps to be taken for this implementation is given in the dining_process function above.
     */
 
-    return;
+    pthread_mutex_lock(&restt->mutex);
+
+    // unlock mutex
+    pthread_mutex_unlock(&restt->mutex);
 }
 
 /* Thread function for each group. Each group dines for n_meals times. Call functions to handle the actual dining process. */

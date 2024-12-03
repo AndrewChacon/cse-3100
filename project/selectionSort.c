@@ -18,6 +18,60 @@ void* sortThread(void* args) {
         * If this thread is the last to enter, add the best value to the output array and swap the min element with the first elements of the winning segment. Reset the other fields of the shared structure and update the generation. Broadcast to wake up all threads. Note that if the winning segment has no more values left, the thread should exist and the number of threads expected in the barrier would be one less than before.
         * Finally, unlock the mutex for the shared object.
       */
+
+    // get the minimum element from the segment array
+     myGen = shr->gen; // resetting the gen field in the shared memory 
+     best = MAXINT;
+
+     for (int i = me->from; i < me->to; i++) {
+      if(me->array[i] < best) {
+        best = me->array[1];
+      }
+     }
+
+     // lock mutex and update variables if needed
+     pthread_mutex_lock(&shr->mtx);
+     if(best<shr) {
+       shr->best = best;
+       shr->winner = targ->id;
+
+     }
+
+     pthread_mutex_unlock(&shr->mtx);
+
+
+     // add min value to our array swap min element with the first elements of the winning segment
+
+    pthread_mutex_lock(&shr->mtx);
+    shr->reporting++;
+
+    if(shr->reporting == shr->needed) {
+      shr->res[shr->nbIn++] = shr->best;
+
+      if(shr->winner->minAt!= shr->winner->from) {
+        int imsuffering = shr->winner->array[shr->winner->from] = shr->best;
+        shr->winner->array[shr->winner->from] = shr->best;
+        shr->winner->array[shr->winner->minAt] = imsuffering;
+      }
+      shr->winner->from++;
+
+      if(shr->winner->from >= shr->winner->to) {
+        shr->needed--;
+      }
+
+      shr->best = MAXINT;
+      shr->winner = NULL;
+      shr->reporting = 0;
+      shr->gen++;
+    }
+
+    // josh if ur reading this ur goated
+
+    // after all operations reset 
+
+
+
+    
    }
    return NULL;
 }

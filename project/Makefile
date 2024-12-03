@@ -1,17 +1,20 @@
-CC=cc
-CFLAGS=-g
-LFLAGS=-pthread
+CC = cc
+CFLAGS = -g
+LFLAGS = -pthread
 
-all: dining selectionSort.o selectionSortTest
+all: dining selectionSortTest
 
-dining : dining.c dining.h
-	cc dining -o dining -lpthread
+dining: dining.o
+    $(CC) $(CFLAGS) dining.o -o dining $(LFLAGS)
 
-selectionSort.o : selectionSort.c
-	$(CC) $(CFLAGS) $^ -c -o $@
+dining.o: dining.c dining.h
+    $(CC) $(CFLAGS) -c dining.c -o dining.o
 
-selectionSortTest: selectionSort.o
-	$(CC) $(CFLAGS) selectionSortTest.c -o $@ $^ $(LFLAGS)
+selectionSort.o: selectionSort.c
+    $(CC) $(CFLAGS) -c selectionSort.c -o selectionSort.o
+
+selectionSortTest: selectionSort.o selectionSortTest.c
+    $(CC) $(CFLAGS) selectionSortTest.c -o selectionSortTest selectionSort.o $(LFLAGS)
 
 clean:
-	rm -rf *.o selectionSort.o selectionSortTest dining
+    rm -rf *.o dining selectionSortTest
