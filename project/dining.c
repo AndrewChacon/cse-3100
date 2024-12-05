@@ -60,53 +60,57 @@ void small_group_dining(group_t * grp)
         * The sequence of steps to be taken for this implementation is given in the dining_process function above.
      */
 
+
+
+
+
+
     // lock the mutex
     pthread_mutex_lock(&restt->mutex);
 
-    if(restt->n_small_taken < restt->n_small_tables) {
-        // if number of small tables taken is less than total number of small tables
-        restt->n_small_taken += 1; // then josh takes a small table
-        table_size = SIZE_SMALL; // set table size to a wsmall table
-        PRINT_SEATED_MSG(grp, table_size);
-    }
-    else if (restt->n_big_taken < restt->n_big_tables && restt->n_big_waiting == 0)
-    {
-        // if big tables taken less than # of big tables AND no one is waiting for a big table
-        restt->n_big_taken += 1; // then josh takes a big table
-        table_size = SIZE_BIG; // and set table size to a big table
-        PRINT_SEATED_MSG(grp, table_size);
-    } else {
-        // if there are no tables free we make Josh wait - no table for you josh
-        restt->n_small_waiting += 1;
-        PRINT_WAITING_MSG(grp);
-        // while we are waiting for a new table to open up 
-        while(restt->n_small_taken == restt->n_small_tables) {
-            // signal to wait
-            pthread_cond_wait(&restt->cond_small, &restt->mutex);
-        }
 
-        // update so that josh isnt waiting for a table anymore
-        restt->n_big_waiting -= 1;
-        // josh now takes the table, so greedy fr 
-        restt->n_big_taken += 1;
-        table_size = SIZE_BIG; // set table size to a big table for josh
-        PRINT_SEATED_MSG(grp, table_size);
+    while(1) { // always listening with break condtions for 3 options
+
+        if(restt->n_small_taken < restt->n_small_tables) {
+            // if number of small tables taken is less than total number of small tables
+            restt->n_small_taken += 1; // then josh takes a small table
+            table_size = SIZE_SMALL; // set table size to a wsmall table
+            PRINT_SEATED_MSG(grp, table_size);
+            break;
+        }
+        else if (restt->n_big_taken < restt->n_big_tables && restt->n_big_waiting == 0) {
+            // if big tables taken less than # of big tables AND no one is waiting for a big table
+            restt->n_big_taken += 1; // then josh takes a big table
+            table_size = SIZE_BIG; // and set table size to a big table
+            PRINT_SEATED_MSG(grp, table_size);
+            break;
+        } else {
+            // if there are no tables free we make Josh wait - no table for you josh
+            restt->n_small_waiting += 1; // increase waiting
+            PRINT_WAITING_MSG(grp);
+
+            pthread_cond_wait(&restt->cond_small, &restt->mutex); // 
+            restt->n_small_waiting -= 1;
+        }
     }
+
     pthread_mutex_unlock(&restt->mutex);
 
     DINING(grp); // josh is now dining and he didnt even save me a seat 
 
     // now josh is gonna leave his table and irsh goodbye all of the guests
     pthread_mutex_lock(&restt->mutex); // lock the mutex
-    restt->n_big_taken -= 1; // free up the table since josh bailed
-    PRINT_LEAVING_MSG(grp, table_size);
 
     // notify that a table has freed up
     // we must specify if the table was big or small and send that signal out
-    if(table_size == SIZE_BIG)
-        pthread_cond_signal(&restt->cond_big);
-    else
-        pthread_cond_signal(&restt->cond_small);
+    if(table_size == SIZE_SMALL) {
+        restt->n_small_taken -= 1;
+        pthread_cond_broadcast(&restt->cond_small);
+    } else {
+        restt->n_big_taken -= 1;
+        pthread_cond_broadcast(&restt->cond_big);
+    }
+    PRINT_LEAVING_MSG(grp, table_size);
 
     // unlock mutext at the end
     pthread_mutex_unlock(&restt->mutex);
@@ -138,43 +142,49 @@ void big_group_dining(group_t * grp)
     // lock the mutex
     pthread_mutex_lock(&restt->mutex);
 
-    if(restt->n_big_taken < restt->n_big_tables) {
-        // if number of big tables taken is less than total number of big tables
-        restt->n_big_taken += 1; // then josh takes a big table
-        table_size = SIZE_BIG; // set table size to a big table
-        PRINT_SEATED_MSG(grp, table_size);
-    } else {
-        // if there are no tables free we make Josh wait - no table for you josh
-        restt->n_big_waiting += 1;
+    // switched to while loop instead of if else, josh waits for a big table to free up 
+    while(restt->n_big_taken >= restt->n_big_tables) {
+        // increase big takes that are taken
+        restt->n_big_waiting += 1; // a big table has been taken from Gotham
         PRINT_WAITING_MSG(grp);
-        // while we are waiting for a new table to open up 
-        while(restt->n_big_waiting == restt->n_big_tables) {
-            // signal to wait
-            pthread_cond_wait(&restt->cond_big, &restt->mutex);
-        }
+        pthread_cond_wait(&restt->cond_big, &restt->mutex); // waiting for table
+        restt->n_big_waiting -= 1; // table has now freed up so minus the big table counter
 
-        // update so that josh isnt waiting for a table anymore
-        restt->n_big_waiting -= 1;
-        // josh now takes the table, so greedy fr 
-        restt->n_big_taken += 1;
-        table_size = SIZE_BIG; // set table size to a big table for josh
-        PRINT_SEATED_MSG(grp, table_size);
+        // if(restt->n_big_taken < restt->n_big_tables) {
+        //     // if number of big tables taken is less than total number of big tables
+        //     restt->n_big_taken += 1; // then josh takes a big table
+        //     table_size = SIZE_BIG; // set table size to a big table
+        //     PRINT_SEATED_MSG(grp, table_size);
+        // } else {
+        //     // if there are no tables free we make Josh wait - no table for you josh
+        //     restt->n_big_waiting += 1;
+        //     PRINT_WAITING_MSG(grp);
+        //     // while we are waiting for a new table to open up 
+        //     while(restt->n_big_waiting == restt->n_big_tables) {
+        //         // signal to wait
+        //         pthread_cond_wait(&restt->cond_big, &restt->mutex);
+        //     }
+        // }
+
     }
+
+    restt->n_big_taken += 1; // josh has stolen one of my big tables, tragic 
+    PRINT_SEATED_MSG(grp, SIZE_BIG);
+
+    // lock mutex becuase josh is about to leave the table
     pthread_mutex_unlock(&restt->mutex);
 
     DINING(grp); // josh is now dining and he didnt even save me a seat 
+    // 
 
     // now josh is gonna leave his table and irsh goodbye all of the guests
     pthread_mutex_lock(&restt->mutex); // lock the mutex
-    restt->n_big_taken -= 1; // free up the table since josh bailed
-    PRINT_LEAVING_MSG(grp, table_size);
 
-    // notify that a table has freed up
-    // we must specify if the table was big or small and send that signal out
-    if(table_size == SIZE_BIG)
-        pthread_cond_signal(&restt->cond_big);
-    else
-        pthread_cond_signal(&restt->cond_small);
+
+    restt->n_big_taken -= 1; // free up the table since josh bailed
+    PRINT_LEAVING_MSG(grp, SIZE_BIG);
+
+    pthread_cond_signal(&restt->cond_big); // removed if else that wasnt needed, signal a group that might be waiting for a big table
 
     // unlock mutext at the end
     pthread_mutex_unlock(&restt->mutex);
