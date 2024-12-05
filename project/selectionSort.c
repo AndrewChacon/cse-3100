@@ -9,7 +9,7 @@ void* sortThread(void* args) {
    Share*  shr = targ->shr;
    me->won  = 1;
    int best = MAXINT,myGen=0;
-   while(me->from < me->to) {
+  //  while(me->from < me->to) {
      /*
        TODO: Implement this function as follows.
         * Set the generation for the thread as the barrier gen and find the min element of the segment array.
@@ -20,59 +20,10 @@ void* sortThread(void* args) {
       */
 
     // get the minimum element from the segment array
-     myGen = shr->gen; // resetting the gen field in the shared memory 
-     best = MAXINT;
-
-     for (int i = me->from; i < me->to; i++) {
-      if(me->array[i] < best) {
-        best = me->array[1];
-      }
-     }
-
-     // lock mutex and update variables if needed
-     pthread_mutex_lock(&shr->mtx);
-     if(best<shr) {
-       shr->best = best;
-       shr->winner = targ->id;
-
-     }
-
-     pthread_mutex_unlock(&shr->mtx);
-
-
-     // add min value to our array swap min element with the first elements of the winning segment
-
-    pthread_mutex_lock(&shr->mtx);
-    shr->reporting++;
-
-    if(shr->reporting == shr->needed) {
-      shr->res[shr->nbIn++] = shr->best;
-
-      if(shr->winner->minAt!= shr->winner->from) {
-        int imsuffering = shr->winner->array[shr->winner->from] = shr->best;
-        shr->winner->array[shr->winner->from] = shr->best;
-        shr->winner->array[shr->winner->minAt] = imsuffering;
-      }
-      shr->winner->from++;
-
-      if(shr->winner->from >= shr->winner->to) {
-        shr->needed--;
-      }
-
-      shr->best = MAXINT;
-      shr->winner = NULL;
-      shr->reporting = 0;
-      shr->gen++;
-    }
-
-    // josh if ur reading this ur goated
-
-    // after all operations reset 
-
-
-
-    
-   }
+    //  myGen = shr->gen; // resetting the gen field in the shared memory 
+    //  best = MAXINT;
+    //  break;
+    // }
    return NULL;
 }
 
